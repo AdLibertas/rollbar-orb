@@ -1,67 +1,41 @@
-# rollbar-orb
-[CircleCI Orb](https://github.com/CircleCI-Public/config-preview-sdk/tree/master/docs) for reporting deploys and uploading sourcemaps to Rollbar.
+# Orb Project Template
 
-## Requirements
-If you don't have them already, create accounts in [Rollbar](https://rollbar.com/signup) and [CircleCI](https://circleci.com/signup/).
-
-In order to use the Rollbar orb, your CircleCI builds need to run in environment where [curl](https://curl.haxx.se/) and [jq](https://stedolan.github.io/jq/) are installed.
-
-## Usage
-
-To use the Rollbar orb, reference it in your project and then use one of the included commands:
-* `notify_deploy` 
-* `notify_deploy_started`
-* `notify_deploy_finished`
-* `upload_sourcemap` 
-
-Documentation for each method is available inline in [orb.yml](https://github.com/rollbar/rollbar-orb/blob/master/src/rollbar/orb.yml).
-
-Here's a very simple example of a CircleCI config that uses the Rollbar orb to report a deploy starting and finishing as well as uploading sourcemaps:
-
-```yaml
-version: 2.1
-orbs:
-    rollbar: rollbar/deploy@volatile
-jobs:
-  build:
-    docker:
-      - image: circleci/ruby:latest
-    environment:
-      ROLLBAR_ACCESS_TOKEN: {{ your `POST_SERVER_ITEM` access token here}}
-      ROLLBAR_ENVIRONMENT: development
-    steps:
-      - checkout
-      - rollbar/notify_deploy_started:
-          environment: $ROLLBAR_ENVIRONMENT
-      - rollbar/upload_sourcemap:
-          minified_url: https://rollbar.com/rollbar.min.js
-          source_map: static/js/rollbar.js.map
-          js_files:  static/js/rollbar.js
-     
-     # The rest of your build steps go here...
-
-     # Notify Rollbar when your deploy has completed successfully
-      - rollbar/notify_deploy_finished:
-          deploy_id: $ROLLBAR_DEPLOY_ID
-          status: succeeded
-```
-
-## Help / Support
-
-If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com)
-
-For bug reports, please [open an issue on GitHub](https://github.com/rollbar/rollbar-orb/issues/new).
+[![CircleCI Build Status](https://circleci.com/gh/adeubank/rollbar-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/adeubank/rollbar-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/adeubank/rollbar-orb)](https://circleci.com/orbs/registry/orb/adeubank/rollbar-orb) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/adeubank/rollbar-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
 
-## Contributing
 
-For details on how to do development work on a CircleCI orb, check out [Circle CI's Orb docs](https://circleci.com/docs/2.0/creating-orbs/).
+A starter template for orb projects. Build, test, and publish orbs automatically on CircleCI with [Orb-Tools](https://circleci.com/orbs/registry/orb/circleci/orb-tools).
 
-To contribute to the Rollbar orb:
+Additional READMEs are available in each directory.
 
-1. [Fork it](https://github.com/rollbar/rollbar-orb)
-2. Create your feature branch (```git checkout -b my-new-feature```).
-3. Commit your changes (```git commit -am 'Added some feature'```)
-4. Push to the branch (```git push origin my-new-feature```)
-5. Create a new Pull Request and submit it for review.
+
+
+## Resources
+
+[CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/adeubank/rollbar-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
+[CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.
+
+### How to Contribute
+
+We welcome [issues](https://github.com/adeubank/rollbar-orb/issues) to and [pull requests](https://github.com/adeubank/rollbar-orb/pulls) against this repository!
+
+### How to Publish
+* Create and push a branch with your new features.
+* When ready to publish a new production version, create a Pull Request from _feature branch_ to `master`.
+* The title of the pull request must contain a special semver tag: `[semver:<segement>]` where `<segment>` is replaced by one of the following values.
+
+| Increment | Description|
+| ----------| -----------|
+| major     | Issue a 1.0.0 incremented release|
+| minor     | Issue a x.1.0 incremented release|
+| patch     | Issue a x.x.1 incremented release|
+| skip      | Do not issue a release|
+
+Example: `[semver:major]`
+
+* Squash and merge. Ensure the semver tag is preserved and entered as a part of the commit message.
+* On merge, after manual approval, the orb will automatically be published to the Orb Registry.
+
+
+For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/orbs).
 
